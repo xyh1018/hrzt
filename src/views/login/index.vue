@@ -8,6 +8,7 @@
       auto-complete="on"
       label-position="left"
     >
+      <!-- 标题 -->
       <div class="title-container">
         <h3 class="title">
           <img
@@ -16,7 +17,7 @@
           >
         </h3>
       </div>
-
+      <!-- 用户账号输入 -->
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -31,7 +32,7 @@
           auto-complete="on"
         />
       </el-form-item>
-
+      <!-- 用户密码输入 -->
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
@@ -56,7 +57,7 @@
           />
         </span>
       </el-form-item>
-
+      <!-- 提交按钮 -->
       <el-button
         :loading="loading"
         type="primary"
@@ -65,7 +66,7 @@
       >
         Login
       </el-button>
-
+      <!-- 提示信息 -->
       <div class="tips">
         <span style="margin-right: 20px" />
         <span />
