@@ -1,15 +1,15 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'vue_admin_template_token'
+const TokenKey = 'hrsaas-ihrm-token'
 
-export function getToken() {
+export function getTokenU() {
   return Cookies.get(TokenKey)
 }
 
-export function setToken(token) {
+export function setTokenU(token) {
   return Cookies.set(TokenKey, token)
 }
 
-export function removeToken() {
+export function removeTokenU() {
   return Cookies.remove(TokenKey)
 }

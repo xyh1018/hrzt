@@ -1,8 +1,6 @@
 const getters = {
   sidebar: state => state.app.sidebar,
-  device: state => {
-    console.log(state)
-    return state.app.device
-  }
+  device: state => state.app.device,
+  token: state => state.user.token
 }
 export default getters
