@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import store from '@/store'
 // 创建axios实例
 const request = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -10,12 +11,22 @@ const request = axios.create({
 })
 
 // 请求拦截器
-request.interceptors.request.use()
+request.interceptors.request.use(
+  (config) => {
+    console.log('请求拦截器', config)
+    if (store.getters.token) {
+      config.headers['Authorization'] = `Bearer ${store.getters.token}`
+    }
+    return config
+  }, (error) => {
+    return Promise.reject(error)
+  }
+)
 
 // 响应拦截器
 request.interceptors.response.use(
   (response) => {
-    console.log(response)
+    console.log('响应拦截器', response)
     const { success, message, data } = response.data
     // success: boolean; message: string; data: string;
     if (success) {

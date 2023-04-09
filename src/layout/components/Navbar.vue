@@ -1,29 +1,45 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
 
-    <breadcrumb class="breadcrumb-container" />
+    <!-- <breadcrumb class="breadcrumb-container" /> -->
+    <div class="app-breadcrumb">人力资源管理平台</div>
 
     <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
+      <el-dropdown
+        class="avatar-container"
+        trigger="click"
+      >
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img
+            src="@/assets/common/bigUserHeader.png"
+            class="user-avatar"
+          >
+          <span class="name">管理员</span>
           <i class="el-icon-caret-bottom" />
         </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
+        <el-dropdown-menu
+          slot="dropdown"
+          class="user-dropdown"
+        >
           <router-link to="/">
-            <el-dropdown-item>
-              Home
-            </el-dropdown-item>
+            <el-dropdown-item> 首页 </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
+          <a
+            target="_blank"
+            href="https://github.com/xyh1018/hrzt"
+          >
+            <el-dropdown-item>项目地址</el-dropdown-item>
           </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+          <el-dropdown-item
+            divided
+            @click.native="logout"
+          >
+            <span style="display: block">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -33,19 +49,16 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
+// import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
-    Breadcrumb,
+    // Breadcrumb,
     Hamburger
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
+    ...mapGetters(['sidebar', 'avatar'])
   },
   methods: {
     toggleSideBar() {
@@ -64,22 +77,29 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  background: -webkit-linear-gradient(bottom, #3d6df8, #5b8cff);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
-
+  .app-breadcrumb {
+    display: inline-block;
+    font-size: 18px;
+    line-height: 50px;
+    margin-left: 10px;
+    color: #ffffff;
+    cursor: text;
+  }
   .breadcrumb-container {
     float: left;
   }
@@ -103,10 +123,10 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }
@@ -118,20 +138,29 @@ export default {
         margin-top: 5px;
         position: relative;
 
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;
           right: -20px;
           top: 25px;
           font-size: 12px;
+          color: #fff;
         }
+        .user-avatar {
+          cursor: pointer;
+          width: 30px;
+          height: 30px;
+          border-radius: 15px;
+          vertical-align: middle;
+        }
+        .name {
+          color: #fff;
+          vertical-align: middle;
+          margin-left: 5px;
+        }
+      }
+      .user-dropdown {
+        color: #fff;
       }
     }
   }
