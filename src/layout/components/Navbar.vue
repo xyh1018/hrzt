@@ -16,10 +16,11 @@
       >
         <div class="avatar-wrapper">
           <img
-            src="@/assets/common/bigUserHeader.png"
+            v-imageError="defaultImgSrc"
+            :src="userPicture"
             class="user-avatar"
           >
-          <span class="name">管理员</span>
+          <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu
@@ -54,19 +55,24 @@ import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
-    // Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      // 默认用户头像
+      defaultImgSrc: require('@/assets/common/head.jpg')
+    }
+  },
   computed: {
-    ...mapGetters(['sidebar', 'avatar'])
+    ...mapGetters(['sidebar', 'avatar', 'name', 'userPicture'])
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    logout() {
+      this.$store.dispatch('user/logout') // 删除用户token和用户资料
+      this.$router.push('/login') // 定向到登陆页
     }
   }
 }
@@ -135,7 +141,7 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        // margin-top: 5px;
         position: relative;
 
         .el-icon-caret-bottom {

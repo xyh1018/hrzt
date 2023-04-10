@@ -13,7 +13,7 @@ NProgress.configure({
 const whiteList = ['/login', '/404']
 
 // 路由前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   NProgress.start() // 开启进度条
   // 判断是否有token
   if (store.getters.token) {
@@ -22,6 +22,9 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next('/') // 如果是登陆页，定向到主页
     } else {
+      if (!store.getters.userId) {
+        await store.dispatch('user/getUserInfo')
+      }
       next() // 不是登陆页，直接放行
     }
   } else {

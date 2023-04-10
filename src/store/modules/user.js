@@ -1,5 +1,5 @@
-import { login, getInfo } from '@/api/user'
-import { getTokenU, setTokenU, removeTokenU } from '@/utils/auth'
+import { login, getInfo, getUserDetailById } from '@/api/user'
+import { getTokenU, setTokenU, removeTokenU, setTimeStampU } from '@/utils/auth'
 // import { resetRouter } from '@/router'
 
 const state = {
@@ -33,11 +33,23 @@ const actions = {
   async login(context, data) {
     const result = await login(data) // 获取token
     context.commit('setToken', result) // 设置token
+    // 设置时间戳
+    setTimeStampU()
   },
   // 获取用户资料
   async getUserInfo(context) {
-    const userInfo = await getInfo()
-    context.commit('setUserInfo', userInfo)
+    // 用户j基本资料
+    const baseInfo = await getInfo()
+    // 用户详细资料
+    const detailInfo = await getUserDetailById(baseInfo.userId)
+    // 合并用户资料
+    const result = { ...baseInfo, ...detailInfo }
+    context.commit('setUserInfo', result)
+  },
+  // 登出
+  logout(context) {
+    context.commit('removeToken')
+    context.commit('removeUserInfo')
   }
 }
 

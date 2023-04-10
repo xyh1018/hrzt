@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
+import { getTimeStampU } from '@/utils/auth'
+import router from '@/router'
 // 创建axios实例
 const request = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -15,6 +17,14 @@ request.interceptors.request.use(
   (config) => {
     console.log('请求拦截器', config)
     if (store.getters.token) {
+      // token失效主动处理
+      if (IsCheckTimeout()) {
+        // 如果token超时，删除用户资料和token
+        store.dispatch('user/logout')
+        // 然后跳转到登陆页
+        router.push('/login')
+        return Promise.reject(new Error('token失效'))
+      }
       config.headers['Authorization'] = `Bearer ${store.getters.token}`
     }
     return config
@@ -40,10 +50,23 @@ request.interceptors.response.use(
     }
   },
   (error) => {
-    Message.error(error.message) // 错误警告
+    // token失效被动处理
+    if (error.response && error.response.data && error.response.data.code === 10002) {
+      store.dispatch('user/logout')
+      router.push('/login')
+    } else {
+      Message.error(error.message) // 错误警告
+    }
     return Promise.reject(error)
   }
 )
-
+// token超时时间
+const Timeout = 3600
+// 检查token是否超时
+function IsCheckTimeout() {
+  const now = Date.now() // 当前时间戳
+  const timeStamp = getTimeStampU() // 缓存时间戳
+  return (now - timeStamp) / 1000 > Timeout
+}
 // 导出
 export default request
