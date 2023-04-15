@@ -19,7 +19,7 @@
           <span class="manager">{{ treeNode.manager }}</span>
         </el-col>
         <el-col>
-          <el-dropdown size="mini">
+          <el-dropdown size="small">
             <span class="el-dropdown-link">
               操作<i class="el-icon-arrow-down el-icon--right" />
             </span>
@@ -51,20 +51,22 @@ export default {
       default: null
     }
   },
-  data() {
-    return {}
-  },
   methods: {
     handleItemClick(item) {
       if (item.id === 1) {
+        // 添加部门
         console.log('添加部门')
-        this.addDepartmentById()
+        this.$emit('isShow', this.treeNode)
       } else if (item.id === 2) {
+        // 查看部门
         console.log('查看部门')
       } else {
+        // 删除部门
+        console.log(this.treeNode.name)
         this.deleteDepartmentById(this.treeNode.id)
       }
     },
+    // 删除部门
     async deleteDepartmentById(id) {
       try {
         await deleteDepartmentById(id)
@@ -73,9 +75,6 @@ export default {
         console.error(err)
         Promise.reject(err)
       }
-    },
-    async addDepartmentById(id) {
-
     }
   }
 }
