@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     title="编辑部门"
-    :visible.sync="isShow"
+    :visible="isShow"
     width="60%"
     :show-close="false"
   >
@@ -83,10 +83,10 @@ export default {
     // 检查部门名称是否重复
     const validateName = async(rule, value, callback) => {
       const { depts } = await this.getDepts()
-      console.log(depts)
       const deptNameList = []
       depts.forEach((item) => {
-        if (this.currentTreeNode.id) {
+        // 如果item的pid等于当前节点的id
+        if (item.pid === this.currentTreeNode.id) {
           deptNameList.push(item.name)
         }
       })
@@ -128,19 +128,33 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入部门名称', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' },
+          {
+            min: 1,
+            max: 10,
+            message: '长度在 1 到 10 个字符',
+            trigger: 'blur'
+          },
           { validator: validateName, trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请输入部门编码', trigger: 'blur' },
-          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' },
+          {
+            min: 1,
+            max: 100,
+            message: '长度在 1 到 100 个字符',
+            trigger: 'blur'
+          },
           { validator: validateCode, trigger: 'blur' }
         ],
-        manager: [
-          { required: true, message: '请选择管理员', trigger: 'blur' }
-        ],
+        manager: [{ required: true, message: '请选择管理员', trigger: 'blur' }],
         introduce: [
-          { min: 3, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
+          { required: true, message: '请填写部门简介', trigger: 'blur' },
+          {
+            min: 1,
+            max: 100,
+            message: '长度在 1 到 100 个字符',
+            trigger: 'blur'
+          }
         ]
       }
     }
@@ -148,12 +162,28 @@ export default {
   methods: {
     cancel() {
       this.$emit('cancelShow')
+      this.$refs.form.resetFields()
     },
     submit() {
-      console.log(this.form)
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.addDepartment({
+            ...this.form,
+            pid: this.currentTreeNode.id
+          })
+          this.$emit('reloadPage', '添加部门成功！')
+          this.form = {}
+        } else {
+          return Promise.reject(new Error('校验失败，请检查必填项'))
+        }
+      })
     },
     async addDepartment(data) {
-      await setNewDepartment(data)
+      try {
+        await setNewDepartment(data)
+      } catch (err) {
+        return Promise.reject(new Error('添加部门失败，请稍后重试！'))
+      }
     },
     async getDepts() {
       try {

@@ -78,3 +78,9 @@ div:focus {
     height: 30px;
   }
 }
+// 修复el-select组件在IOS移动端的兼容问题，点击2次才能选中
+.el-scrollbar {
+  .el-scrollbar__bar {
+    opacity: 1 !important;
+  }
+}

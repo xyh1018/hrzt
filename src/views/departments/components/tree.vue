@@ -38,6 +38,7 @@
 </template>
 <script>
 import { deleteDepartmentById } from '@/api/departments'
+import { MessageBox, Message } from 'element-ui'
 export default {
   props: {
     treeNode: {
@@ -55,22 +56,31 @@ export default {
     handleItemClick(item) {
       if (item.id === 1) {
         // 添加部门
-        console.log('添加部门')
         this.$emit('isShow', this.treeNode)
       } else if (item.id === 2) {
         // 查看部门
         console.log('查看部门')
       } else {
         // 删除部门
-        console.log(this.treeNode.name)
-        this.deleteDepartmentById(this.treeNode.id)
+        MessageBox.confirm('此操作将删除该部门, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.deleteDepartmentById(this.treeNode.id)
+        }).catch(() => {
+          Message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
       }
     },
     // 删除部门
     async deleteDepartmentById(id) {
       try {
         await deleteDepartmentById(id)
-        this.$emit('reloadPage')
+        this.$emit('reloadPage', '删除部门成功')
       } catch (err) {
         console.error(err)
         Promise.reject(err)

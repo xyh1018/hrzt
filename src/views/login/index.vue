@@ -226,12 +226,14 @@ $light_gray: #eee;
   overflow: hidden;
   background-image: url('~@/assets/common/login.jpg');
   background-position: center;
-
+  background-size: cover;
+  display: flex;
+  align-items: center;
   .login-form {
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 0 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }
