@@ -26,7 +26,7 @@ export function deleteDepartmentById(id) {
   })
 }
 // 根据ID修改部门详情
-export function setDepartmentDetailById(id) {
+export function updateDepartmentDetailById(id) {
   return request({
     url: `/company/department/${id}`,
     method: 'PUT'

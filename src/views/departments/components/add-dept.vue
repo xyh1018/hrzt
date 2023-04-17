@@ -60,7 +60,12 @@
 </template>
 
 <script>
-import { setNewDepartment, getDepartmentList } from '@/api/departments'
+import {
+  setNewDepartment,
+  getDepartmentList,
+  getDepartmentDetailById,
+  updateDepartmentDetailById
+} from '@/api/departments'
 export default {
   props: {
     isShow: {
@@ -84,12 +89,21 @@ export default {
     const validateName = async(rule, value, callback) => {
       const { depts } = await this.getDepts()
       const deptNameList = []
-      depts.forEach((item) => {
-        // 如果item的pid等于当前节点的id
-        if (item.pid === this.currentTreeNode.id) {
-          deptNameList.push(item.name)
-        }
-      })
+      if (this.form.id) {
+        depts.forEach((item) => {
+          if (item.id !== this.form.id && item.pid === this.form.pid) {
+            deptNameList.push(item.name)
+          }
+        })
+      } else {
+        depts.forEach((item) => {
+        // 寻找当前节点的所有子节点
+        // 检查item的pid等于当前节点的id
+          if (item.pid === this.currentTreeNode.id) {
+            deptNameList.push(item.name)
+          }
+        })
+      }
       // isRepeat是一个Boolean值
       const isRepeat = deptNameList.some((name) => {
         return name === value
@@ -104,11 +118,20 @@ export default {
     const validateCode = async(rule, value, callback) => {
       const { depts } = await this.getDepts()
       const deptCodeList = []
-      depts.forEach((item) => {
-        if (item.code) {
-          deptCodeList.push(item.code)
-        }
-      })
+      if (this.form.id) {
+        depts.forEach((item) => {
+          if (item.id !== this.form.id) {
+            deptCodeList.push(item.code)
+          }
+        })
+        console.log('deptCodeList', deptCodeList)
+      } else {
+        depts.forEach((item) => {
+          if (item.code) {
+            deptCodeList.push(item.code)
+          }
+        })
+      }
       const isRepeat = deptCodeList.some((code) => {
         return code === value
       })
@@ -167,27 +190,51 @@ export default {
     submit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.addDepartment({
-            ...this.form,
-            pid: this.currentTreeNode.id
-          })
-          this.$emit('reloadPage', '添加部门成功！')
-          this.form = {}
+          if (this.form.id) {
+            this.updateDeptsDetail(this.form.id)
+            this.$emit('reloadPage', '部门更新成功')
+          } else {
+            this.addDepts({
+              ...this.form,
+              pid: this.currentTreeNode.id
+            })
+            this.$emit('reloadPage', '部门添加成功！')
+            this.form = {}
+          }
         } else {
           return Promise.reject(new Error('校验失败，请检查必填项'))
         }
       })
     },
-    async addDepartment(data) {
+    // 添加部门
+    async addDepts(data) {
       try {
         await setNewDepartment(data)
       } catch (err) {
         return Promise.reject(new Error('添加部门失败，请稍后重试！'))
       }
     },
+    // 获取部门列表
     async getDepts() {
       try {
         return await getDepartmentList()
+      } catch (err) {
+        Promise.reject(new Error('操作失败，请稍后重试'))
+      }
+    },
+    // 获取部门详情
+    async getDeptsDetail(id) {
+      try {
+        this.form = await getDepartmentDetailById(id)
+        console.log(this.form.code)
+      } catch (err) {
+        Promise.reject(new Error('操作失败，请稍后重试'))
+      }
+    },
+    // 更新部门详情
+    async updateDeptsDetail(id) {
+      try {
+        await updateDepartmentDetailById(id)
       } catch (err) {
         Promise.reject(new Error('操作失败，请稍后重试'))
       }

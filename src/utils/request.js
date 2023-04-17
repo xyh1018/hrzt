@@ -23,7 +23,7 @@ request.interceptors.request.use(
         store.dispatch('user/logout')
         // 然后跳转到登陆页
         router.push('/login')
-        return Promise.reject(new Error('token失效'))
+        return Promise.reject(new Error('用户登陆失效，请重新登陆'))
       }
       config.headers['Authorization'] = `Bearer ${store.getters.token}`
     }

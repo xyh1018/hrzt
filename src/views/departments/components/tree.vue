@@ -59,7 +59,7 @@ export default {
         this.$emit('isShow', this.treeNode)
       } else if (item.id === 2) {
         // 查看部门
-        console.log('查看部门')
+        this.$emit('isShowEdit', this.treeNode)
       } else {
         // 删除部门
         MessageBox.confirm('此操作将删除该部门, 是否继续?', '提示', {

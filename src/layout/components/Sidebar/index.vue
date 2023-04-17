@@ -2,7 +2,7 @@
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
     <!-- el-scrollbar组件在移动端有bug，这里设置:native="true"，意思是使用浏览器原生滚动条 -->
-    <el-scrollbar wrap-class="scrollbar-wrapper" :native="true">
+    <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"

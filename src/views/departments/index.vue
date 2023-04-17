@@ -26,12 +26,14 @@
               :dropdown-list="mainList"
               @reloadPage="reloadPage"
               @isShow="show"
+              @isShowEdit="isShowEdit"
             />
           </el-tree>
         </div>
       </el-card>
     </div>
     <add-dept
+      ref="dept"
       :is-show.sync="isShow"
       :options="options"
       :current-tree-node="currentTreeNode"
@@ -66,12 +68,12 @@ export default {
       headerList: [{ id: 1, name: '添加子部门' }],
       mainList: [
         { id: 1, name: '添加子部门' },
-        { id: 2, name: '查看部门' },
+        { id: 2, name: '编辑部门' },
         { id: 3, name: '删除部门' }
       ],
       isShow: false, // 是否展示弹层
       options: [], // 管理员选项
-      currentTreeNode: {}
+      currentTreeNode: {} // 当前点击节点的数据
     }
   },
   created() {
@@ -125,8 +127,13 @@ export default {
       })
     },
     show(currentTreeNode) {
+      this.isShow = true
+      this.currentTreeNode = currentTreeNode
+    },
+    isShowEdit(currentTreeNode) {
       this.isShow = !this.isShow
       this.currentTreeNode = currentTreeNode
+      this.$refs.dept.getDeptsDetail(currentTreeNode.id)
     }
   }
 }

@@ -8,10 +8,6 @@ export function login(data) {
     data: data
   })
 }
-//
-export function logout() {
-
-}
 // 获取用户资料
 export function getInfo(token) {
   return request({
