@@ -111,3 +111,35 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+/**
+ * @param {number} time
+ * @param {string} option
+ * @returns {string}
+ * 将数组数据转化为树形结构
+ */
+export function arrayToTree(array) {
+  const tree = []
+  for (let i = 0; i < array.length; i++) {
+    const item = array[i]
+    if (item.pid !== '-1') {
+      // 查找result里的对象的id是否等于循环中的对象的pid？
+      const parent = array.find((e) => e.id === item.pid)
+      // 如果相等
+      if (parent) {
+        // 如果parent对象里没有children数组
+        if (!parent.children) {
+          // 创建一个children数组
+          parent.children = []
+        }
+        // 如果parent对象里已经有children数组
+        // 那么直接push
+        parent.children.push(item)
+      } else {
+        // 如果不相等，把item添加到新数组里
+        tree.push(item)
+      }
+    }
+  }
+  return tree
+}

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="编辑部门"
+    :title="title"
     :visible="isShow"
     width="60%"
     :show-close="false"
@@ -124,7 +124,6 @@ export default {
             deptCodeList.push(item.code)
           }
         })
-        console.log('deptCodeList', deptCodeList)
       } else {
         depts.forEach((item) => {
           if (item.code) {
@@ -182,6 +181,15 @@ export default {
       }
     }
   },
+  computed: {
+    title() {
+      if (this.form.id) {
+        return '编辑部门'
+      } else {
+        return '添加部门'
+      }
+    }
+  },
   methods: {
     cancel() {
       this.$emit('cancelShow')
@@ -191,7 +199,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           if (this.form.id) {
-            this.updateDeptsDetail(this.form.id)
+            this.updateDeptsDetail(this.form.id, this.form)
             this.$emit('reloadPage', '部门更新成功')
           } else {
             this.addDepts({
@@ -199,7 +207,7 @@ export default {
               pid: this.currentTreeNode.id
             })
             this.$emit('reloadPage', '部门添加成功！')
-            this.form = {}
+            // this.form = {}
           }
         } else {
           return Promise.reject(new Error('校验失败，请检查必填项'))
@@ -226,15 +234,15 @@ export default {
     async getDeptsDetail(id) {
       try {
         this.form = await getDepartmentDetailById(id)
-        console.log(this.form.code)
+        console.log('获取部门详情', this.form)
       } catch (err) {
         Promise.reject(new Error('操作失败，请稍后重试'))
       }
     },
     // 更新部门详情
-    async updateDeptsDetail(id) {
+    async updateDeptsDetail(id, data) {
       try {
-        await updateDepartmentDetailById(id)
+        await updateDepartmentDetailById(id, data)
       } catch (err) {
         Promise.reject(new Error('操作失败，请稍后重试'))
       }

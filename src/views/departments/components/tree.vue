@@ -58,7 +58,7 @@ export default {
         // 添加部门
         this.$emit('isShow', this.treeNode)
       } else if (item.id === 2) {
-        // 查看部门
+        // 编辑部门
         this.$emit('isShowEdit', this.treeNode)
       } else {
         // 删除部门
@@ -67,7 +67,9 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.deleteDepartmentById(this.treeNode.id)
+          return this.deleteDepartmentById(this.treeNode.id)
+        }).then(() => {
+          this.$emit('reloadPage', '删除部门成功')
         }).catch(() => {
           Message({
             type: 'info',
@@ -80,9 +82,7 @@ export default {
     async deleteDepartmentById(id) {
       try {
         await deleteDepartmentById(id)
-        this.$emit('reloadPage', '删除部门成功')
       } catch (err) {
-        console.error(err)
         Promise.reject(err)
       }
     }

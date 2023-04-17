@@ -26,10 +26,11 @@ export function deleteDepartmentById(id) {
   })
 }
 // 根据ID修改部门详情
-export function updateDepartmentDetailById(id) {
+export function updateDepartmentDetailById(id, data) {
   return request({
     url: `/company/department/${id}`,
-    method: 'PUT'
+    method: 'PUT',
+    data
   })
 }
 // 根据ID查询部门详情

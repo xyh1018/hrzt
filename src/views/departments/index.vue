@@ -48,6 +48,8 @@ import tree from './components/tree.vue'
 import addDept from './components/add-dept.vue'
 import { getDepartmentList } from '@/api/departments'
 import { Message } from 'element-ui'
+import { arrayToTree } from '@/utils/index'
+
 export default {
   components: {
     tree,
@@ -82,7 +84,6 @@ export default {
   methods: {
     // 获取公司列表函数
     async getDepartmentList() {
-      this.treeData = []
       const data = await getDepartmentList()
       this.headerTreeNode.name = data.companyName
       const result = data.depts
@@ -95,32 +96,12 @@ export default {
         }
       })
       // 将数组数据转化为树形结构
-      for (let i = 0; i < result.length; i++) {
-        const item = result[i]
-        if (item.pid !== '-1') {
-          // 查找result里的对象的id是否等于循环中的对象的pid？
-          const parent = result.find((e) => e.id === item.pid)
-          // 如果相等
-          if (parent) {
-          // 如果parent对象里没有children数组
-            if (!parent.children) {
-            // 创建一个children数组
-              parent.children = []
-            }
-            // 如果parent对象里已经有children数组
-            // 那么直接push
-            parent.children.push(item)
-          } else {
-          // 如果不相等，把item添加到新数组里
-            this.treeData.push(item)
-          }
-        }
-      }
+      this.treeData = arrayToTree(result)
     },
     // 重新加载公司列表数据
-    reloadPage(message) {
+    async reloadPage(message) {
       this.isShow = false
-      this.getDepartmentList()
+      await this.getDepartmentList()
       Message({
         message,
         type: 'success'

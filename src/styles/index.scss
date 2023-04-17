@@ -11,7 +11,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-    background-color: #f0f1f5;
+  background-color: #f0f1f5;
 }
 
 label {
@@ -66,9 +66,26 @@ div:focus {
   padding: 20px;
 }
 
+// 移动端适配
 @media screen and (max-width: 750px) {
   .app-container {
     padding: 0;
+  }
+
+  .el-dialog {
+    width: 90% !important;
+  }
+
+  .el-message-box {
+    width: 80% !important;
+  }
+
+  .el-message {
+    min-width: 300px !important;
+  }
+
+  .el-col-8 {
+    width: 60%;
   }
 }
 
@@ -78,6 +95,7 @@ div:focus {
     height: 30px;
   }
 }
+
 // 修复el-select组件在IOS移动端的兼容问题，点击2次才能选中
 .el-scrollbar {
   .el-scrollbar__bar {
