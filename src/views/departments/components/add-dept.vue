@@ -196,18 +196,18 @@ export default {
       this.$refs.form.resetFields()
     },
     submit() {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(async(valid) => {
         if (valid) {
           if (this.form.id) {
-            this.updateDeptsDetail(this.form.id, this.form)
+            await this.updateDeptsDetail(this.form.id, this.form)
             this.$emit('reloadPage', '部门更新成功')
           } else {
-            this.addDepts({
+            await this.addDepts({
               ...this.form,
               pid: this.currentTreeNode.id
             })
             this.$emit('reloadPage', '部门添加成功！')
-            // this.form = {}
+            this.form = {}
           }
         } else {
           return Promise.reject(new Error('校验失败，请检查必填项'))
@@ -244,7 +244,7 @@ export default {
       try {
         await updateDepartmentDetailById(id, data)
       } catch (err) {
-        Promise.reject(new Error('操作失败，请稍后重试'))
+        return Promise.reject(new Error('操作失败，请稍后重试'))
       }
     }
   }

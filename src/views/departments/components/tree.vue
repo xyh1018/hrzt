@@ -69,6 +69,8 @@ export default {
         }).then(() => {
           return this.deleteDepartmentById(this.treeNode.id)
         }).then(() => {
+          // 要等到this.deleteDepartmentById(this.treeNode.id)执行完成
+          // 并返回成功状态，再重载页面
           this.$emit('reloadPage', '删除部门成功')
         }).catch(() => {
           Message({

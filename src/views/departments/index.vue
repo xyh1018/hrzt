@@ -99,9 +99,9 @@ export default {
       this.treeData = arrayToTree(result)
     },
     // 重新加载公司列表数据
-    async reloadPage(message) {
+    reloadPage(message) {
       this.isShow = false
-      await this.getDepartmentList()
+      this.getDepartmentList()
       Message({
         message,
         type: 'success'
