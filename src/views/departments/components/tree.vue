@@ -38,7 +38,7 @@
 </template>
 <script>
 import { deleteDepartmentById } from '@/api/departments'
-import { MessageBox, Message } from 'element-ui'
+import { MessageBox } from 'element-ui'
 export default {
   props: {
     treeNode: {
@@ -68,15 +68,8 @@ export default {
           type: 'warning'
         }).then(() => {
           return this.deleteDepartmentById(this.treeNode.id)
-        }).then(() => {
-          // 要等到this.deleteDepartmentById(this.treeNode.id)执行完成
-          // 并返回成功状态，再重载页面
+        }).then(async() => {
           this.$emit('reloadPage', '删除部门成功')
-        }).catch(() => {
-          Message({
-            type: 'info',
-            message: '已取消删除'
-          })
         })
       }
     },
@@ -85,7 +78,7 @@ export default {
       try {
         await deleteDepartmentById(id)
       } catch (err) {
-        Promise.reject(err)
+        return Promise.reject(err)
       }
     }
   }

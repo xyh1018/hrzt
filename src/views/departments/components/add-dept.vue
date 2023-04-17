@@ -200,14 +200,15 @@ export default {
         if (valid) {
           if (this.form.id) {
             await this.updateDeptsDetail(this.form.id, this.form)
+            this.form = {}
             this.$emit('reloadPage', '部门更新成功')
           } else {
             await this.addDepts({
               ...this.form,
               pid: this.currentTreeNode.id
             })
-            this.$emit('reloadPage', '部门添加成功！')
             this.form = {}
+            this.$emit('reloadPage', '部门添加成功！')
           }
         } else {
           return Promise.reject(new Error('校验失败，请检查必填项'))
@@ -227,7 +228,7 @@ export default {
       try {
         return await getDepartmentList()
       } catch (err) {
-        Promise.reject(new Error('操作失败，请稍后重试'))
+        return Promise.reject(new Error('操作失败，请稍后重试'))
       }
     },
     // 获取部门详情
@@ -236,7 +237,7 @@ export default {
         this.form = await getDepartmentDetailById(id)
         console.log('获取部门详情', this.form)
       } catch (err) {
-        Promise.reject(new Error('操作失败，请稍后重试'))
+        return Promise.reject(new Error('操作失败，请稍后重试'))
       }
     },
     // 更新部门详情
