@@ -67,7 +67,7 @@ div:focus {
 }
 
 // 移动端适配
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 600px) {
   .app-container {
     padding: 0;
   }
@@ -86,6 +86,12 @@ div:focus {
 
   .el-col-8 {
     width: 60%;
+  }
+
+  // input框禁用状态下，字体颜色
+  .el-input.is-disabled .el-input__inner,
+  .el-textarea.is-disabled .el-textarea__inner {
+    color: #7c828e;
   }
 }
 

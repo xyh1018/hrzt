@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 /**
- * 获取组织架构页面数据
+ * 组织架构页面数据接口
  */
 
 // 查询企业的部门列表
