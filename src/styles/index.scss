@@ -93,6 +93,10 @@ div:focus {
   .el-textarea.is-disabled .el-textarea__inner {
     color: #7c828e;
   }
+
+  .el-button+.el-button {
+    margin-left: 5px;
+  }
 }
 
 // 组织架构样式

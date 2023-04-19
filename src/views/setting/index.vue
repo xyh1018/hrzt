@@ -13,6 +13,7 @@
                   type="primary"
                   size="small"
                   icon="el-icon-plus"
+                  @click="addRole"
                 >新增角色</el-button>
               </el-col>
             </el-row>
@@ -43,18 +44,22 @@
                     width="145"
                     align="center"
                   >
-                    <el-button
-                      size="small"
-                      type="text"
-                    >分配权限</el-button>
-                    <el-button
-                      size="small"
-                      type="text"
-                    >编辑</el-button>
-                    <el-button
-                      size="small"
-                      type="text"
-                    >删除</el-button>
+                    <template slot-scope="{row}">
+                      <el-button
+                        size="small"
+                        type="text"
+                      >分配权限</el-button>
+                      <el-button
+                        size="small"
+                        type="text"
+                        @click="editRole(row.id)"
+                      >编辑</el-button>
+                      <el-button
+                        size="small"
+                        type="text"
+                        @click="deleteRole(row.id)"
+                      >删除</el-button>
+                    </template>
                   </el-table-column>
                 </el-table>
               </el-col>
@@ -128,14 +133,20 @@
           </el-tab-pane>
         </el-tabs>
       </el-card>
+      <add-role ref="role" :is-show="isShow" @cancel="cancel" @closeShow="closeShow" />
     </div>
   </div>
 </template>
 
 <script>
-import { getAllRole, getCompany } from '@/api/setting'
+import { getAllRole, getCompany, deleteRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
+import { MessageBox } from 'element-ui'
+import addRole from './components/add-role.vue'
 export default {
+  components: {
+    addRole
+  },
   data() {
     return {
       activeName: 'first',
@@ -152,7 +163,8 @@ export default {
         page: 1,
         pagesize: 10,
         total: 0
-      }
+      },
+      isShow: false
     }
   },
   computed: {
@@ -173,8 +185,39 @@ export default {
     async getCompany() {
       this.form = await getCompany(this.companyId)
     },
+    // 删除角色
+    async deleteRole(id) {
+      try {
+        await MessageBox.confirm('此操作将删除该角色, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        await deleteRole(id)
+        this.getRole()
+        this.$message.success('删除角色成功')
+      } catch (err) {
+        console.log(err)
+      }
+    },
     changePage(newPage) {
       this.page.page = newPage
+      this.getRole()
+    },
+    addRole() {
+      this.isShow = true
+    },
+    editRole(id) {
+      this.$refs.role.getRoleDetail(id)
+      this.isShow = true
+    },
+    // 点击取消按钮，调用
+    cancel() {
+      this.isShow = false
+    },
+    // 点击完成按钮，调用
+    closeShow() {
+      this.isShow = false
       this.getRole()
     }
   }

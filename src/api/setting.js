@@ -18,3 +18,33 @@ export function getCompany(id) {
     method: 'GET'
   })
 }
+// 添加角色
+export function addRole(data) {
+  return request({
+    url: '/sys/role',
+    method: 'POST',
+    data
+  })
+}
+// 删除角色
+export function deleteRole(id) {
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'DELETE'
+  })
+}
+// 更新角色
+export function updateRole(id, data) {
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'PUT',
+    data
+  })
+}
+// 获取角色详情
+export function getRoleDetail(id) {
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'GET'
+  })
+}
