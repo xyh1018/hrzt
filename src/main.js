@@ -16,6 +16,13 @@ import router from './router'
 import '@/icons' // 图标
 import '@/permission' // 路由权限控制
 import { imageError } from '@/directives' // 自定义指令
+import Components from '@/components'
+import * as filters from '@/filters' // 导入自定义过滤器
+// 注册自定义过滤器
+Object.keys(filters).forEach((key) => {
+  Vue.filter(key, filters[key])
+})
+Vue.use(Components)
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 

@@ -22,7 +22,10 @@
         prop="description"
         label="角色表述"
       >
-        <el-input v-model="form.description" type="textarea" />
+        <el-input
+          v-model="form.description"
+          type="textarea"
+        />
       </el-form-item>
     </el-form>
     <span
@@ -64,8 +67,16 @@ export default {
           { required: true, message: '请输入角色描述', trigger: 'blur' },
           { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
         ]
-      },
-      title: '新增角色'
+      }
+    }
+  },
+  computed: {
+    title() {
+      if (this.form.id) {
+        return '编辑角色'
+      } else {
+        return '新增角色'
+      }
     }
   },
   methods: {
@@ -73,28 +84,24 @@ export default {
       try {
         await this.$refs.form.validate()
         if (this.form.id) {
-          try {
-            this.updateRole()
-            this.$emit('closeShow')
-            this.$message.success('编辑角色成功')
-            this.form = {
-              name: '',
-              description: ''
-            }
-          } catch (err) {
-            console.log(err)
+          await this.updateRole()
+          this.$emit('closeShow')
+          this.$message.success('编辑角色成功')
+          this.form = {
+            name: '',
+            description: ''
           }
         } else {
-          this.addRole()
+          await this.addRole()
           this.$emit('closeShow')
-          this.$message.success('添加角色成功')
+          this.$message.success('新增角色成功')
           this.form = {
             name: '',
             description: ''
           }
         }
       } catch (err) {
-        console.log(err)
+        return Promise.reject(new Error('校验失败，请检查必填项'))
       }
     },
     cancel() {

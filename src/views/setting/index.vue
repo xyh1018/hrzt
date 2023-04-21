@@ -39,12 +39,12 @@
                     label="描述"
                   />
                   <el-table-column
-                    prop="address"
+                    prop="operation"
                     label="操作"
                     width="145"
                     align="center"
                   >
-                    <template slot-scope="{row}">
+                    <template slot-scope="{ row }">
                       <el-button
                         size="small"
                         type="text"
@@ -74,6 +74,7 @@
                 :total="page.total"
                 :page-size="page.pagesize"
                 :current-page="page.page"
+                class="pagination"
                 @current-change="changePage"
               />
             </el-row>
@@ -133,7 +134,12 @@
           </el-tab-pane>
         </el-tabs>
       </el-card>
-      <add-role ref="role" :is-show="isShow" @cancel="cancel" @closeShow="closeShow" />
+      <add-role
+        ref="role"
+        :is-show="isShow"
+        @cancel="cancel"
+        @closeShow="closeShow"
+      />
     </div>
   </div>
 </template>
@@ -227,7 +233,10 @@ export default {
 <style lang="scss">
 @media screen and (max-width: 600px) {
   .el-card__body {
-    padding: 10px;
+    padding: 5px;
+  }
+  .pagination {
+    margin: 10px 0;
   }
 }
 .setting-container {
