@@ -11,6 +11,7 @@
             type="primary"
             size="small"
             class="right-button-one"
+            @click="batchImport"
           >
             导入
           </el-button>
@@ -18,6 +19,7 @@
             type="primary"
             size="small"
             class="right-button-two"
+            @click="exportData"
           >
             导出
           </el-button>
@@ -26,6 +28,7 @@
             size="small"
             icon="el-icon-plus"
             class="right-button-three"
+            @click="isShow=true"
           >
             新增员工
           </el-button>
@@ -109,30 +112,33 @@
             fixed="right"
             align="center"
           >
-            <el-button
-              size="small"
-              type="text"
-            >查看</el-button>
-            <el-button
-              size="small"
-              type="text"
-            >转正</el-button>
-            <el-button
-              size="small"
-              type="text"
-            >调岗</el-button>
-            <el-button
-              size="small"
-              type="text"
-            >离职</el-button>
-            <el-button
-              size="small"
-              type="text"
-            >角色</el-button>
-            <el-button
-              size="small"
-              type="text"
-            >删除</el-button>
+            <template v-slot="{ row }">
+              <el-button
+                size="small"
+                type="text"
+              >查看</el-button>
+              <el-button
+                size="small"
+                type="text"
+              >转正</el-button>
+              <el-button
+                size="small"
+                type="text"
+              >调岗</el-button>
+              <el-button
+                size="small"
+                type="text"
+              >离职</el-button>
+              <el-button
+                size="small"
+                type="text"
+              >角色</el-button>
+              <el-button
+                size="small"
+                type="text"
+                @click="deleteEmp(row.id)"
+              >删除</el-button>
+            </template>
           </el-table-column>
         </el-table>
         <!-- 分页器 -->
@@ -151,14 +157,20 @@
           />
         </el-row>
       </el-card>
+      <addEmp :is-show="isShow" @cancel="isShow=false" @submit="submit" />
     </div>
   </div>
 </template>
 
 <script>
-import { getEmployee } from '@/api/employees'
+import { getEmployee, deleteEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
+import addEmp from './components/add-emp.vue'
+import { formatDate } from '@/filters/index'
 export default {
+  components: {
+    addEmp
+  },
   data() {
     return {
       tableData: [],
@@ -166,7 +178,8 @@ export default {
         page: 1,
         size: 10
       },
-      total: 0
+      total: 0,
+      isShow: false
     }
   },
   created() {
@@ -180,6 +193,21 @@ export default {
       this.total = total
       console.log(this.tableData)
     },
+    // 删除员工
+    async deleteEmp(id) {
+      try {
+        await this.$confirm('此操作将永久删除该员工, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        await deleteEmployee(id)
+        await this.getEmployee()
+        this.$message.success('删除员工成功')
+      } catch (err) {
+        console.log(err)
+      }
+    },
     changePage(page) {
       this.page.page = page
       this.getEmployee()
@@ -187,16 +215,70 @@ export default {
     // 格式化聘用形式
     formatEmployment(row, column, cellValue, index) {
       const obj = EmployeeEnum.hireType.find((item) => {
-        return item.id === cellValue
+        return parseInt(item.id) === parseInt(cellValue)
       })
       return obj ? obj.value : '未知'
     },
     // 格式化状态
     formatEnableState(row, column, cellValue, index) {
       const obj = EmployeeEnum.workingState.find((item) => {
-        return item.id === cellValue
+        return parseInt(item.id) === parseInt(cellValue)
       })
       return obj ? obj.value : '未知'
+    },
+    submit() {
+      this.isShow = false
+      this.getEmployee()
+    },
+    // 导入员工excel
+    batchImport() {
+      this.$router.push('/import')
+    },
+    // 导出员工数据
+    async exportData() {
+      const headers = {
+        '姓名': 'username',
+        '手机号': 'mobile',
+        '工号': 'workNumber',
+        '聘用形式': 'formOfEmployment',
+        '部门': 'departmentName',
+        '入职日期': 'timeOfEntry',
+        '转正日期': 'correctionTime'
+      }
+      const { rows } = await getEmployee({
+        page: 1,
+        size: this.total
+      })
+      const data = this.formatJson(headers, rows)
+      console.log(data)
+      import('@/vendor/Export2Excel').then((excel) => {
+        excel.export_json_to_excel({
+          header: Object.keys(headers),
+          data: data,
+          filename: '员工列表',
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      })
+    },
+    // 格式化员工列表数据为[[1,2,3],[1,2,3]]形式
+    formatJson(headers, rows) {
+      return rows.map((item) => {
+        return Object.keys(headers).map((key) => {
+          if (headers[key] === 'timeOfEntry' || headers[key] === 'correctionTime') {
+            // 格式化日期
+            return formatDate(item[headers[key]])
+          } else if (headers[key] === 'formOfEmployment') {
+            if (item[headers[key]] === '1') {
+              return '正式'
+            } else {
+              return '非正式'
+            }
+          } else {
+            return item[headers[key]]
+          }
+        })
+      })
     }
   }
 }

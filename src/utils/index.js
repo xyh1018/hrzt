@@ -113,9 +113,8 @@ export function param2Obj(url) {
 }
 
 /**
- * @param {number} time
- * @param {string} option
- * @returns {string}
+ * @param {Array} array
+ * @returns {Array}
  * 将数组数据转化为树形结构
  */
 export function arrayToTree(array) {
@@ -138,6 +137,36 @@ export function arrayToTree(array) {
       } else {
         // 如果不相等，把item添加到新数组里
         tree.push(item)
+      }
+    }
+  }
+  return tree
+}
+
+/**
+ * 将数组数据转化为树形结构,并重命名属性
+ */
+export function toTreeRename(array) {
+  const tree = []
+  for (let i = 0; i < array.length; i++) {
+    const item = array[i]
+    if (item.pid !== '-1') {
+      const parent = array.find((e) => e.id === item.pid)
+      if (parent) {
+        if (!parent.children) {
+          parent.children = []
+        }
+        parent.children.push({
+          value: item.name,
+          label: item.name,
+          children: toTreeRename(item.children || [])
+        })
+      } else {
+        tree.push({
+          value: item.name,
+          label: item.name,
+          children: toTreeRename(item.children || [])
+        })
       }
     }
   }

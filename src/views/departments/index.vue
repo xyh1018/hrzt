@@ -97,6 +97,7 @@ export default {
       })
       // 将数组数据转化为树形结构
       this.treeData = arrayToTree(result)
+      console.log('树形结构', this.treeData)
     },
     // 重新加载公司列表数据
     reloadPage(message) {
