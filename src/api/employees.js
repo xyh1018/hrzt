@@ -34,3 +34,48 @@ export function importEmployee(data) {
     data
   })
 }
+// 保存员工基本信息
+export function saveUserInfo(data) {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'PUT',
+    data
+  })
+}
+// 获取员工个人信息
+export function getEmPersonalInfo(id) {
+  return request({
+    url: `/employees/${id}/personalInfo`,
+    method: 'GET'
+  })
+}
+// 获取员工个人信息
+export function saveEmPersonalInfo(id, data) {
+  return request({
+    url: `/employees/${id}/personalInfo`,
+    method: 'PUT',
+    data
+  })
+}
+// 获取员工基本信息
+export function getEmBaseInfo(id) {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'GET'
+  })
+}
+// 获取员工岗位信息
+export function getJobInfo(id) {
+  return request({
+    url: `/employees/${id}/jobs`,
+    method: 'GET'
+  })
+}
+// 保存员工岗位信息
+export function saveJobInfo(id, data) {
+  return request({
+    url: `/employees/${id}/jobs`,
+    method: 'PUT',
+    data
+  })
+}

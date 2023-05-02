@@ -116,6 +116,7 @@
               <el-button
                 size="small"
                 type="text"
+                @click="$router.push(`/employees/detail/${row.id}`)"
               >查看</el-button>
               <el-button
                 size="small"
@@ -191,7 +192,6 @@ export default {
       const { rows, total } = await getEmployee(this.page)
       this.tableData = rows
       this.total = total
-      console.log(this.tableData)
     },
     // 删除员工
     async deleteEmp(id) {
