@@ -559,6 +559,7 @@ export default {
         this.$message.warning('图片未上传完毕')
         return
       }
+      console.log(fileList)
       await saveUserInfo({ ...this.userInfo, staffPhoto: fileList[0].url })
     },
     // 获取员工个人信息
@@ -569,6 +570,10 @@ export default {
     // 保存员工个人信息
     async saveEmPersonalInfo() {
       const fileList = this.$refs.photo.fileList
+      if (fileList.some(item => !item.upload)) {
+        this.$message.warning('图片未上传完毕')
+        return
+      }
       await saveEmPersonalInfo(this.userId, { ...this.formData, staffPhoto: fileList[0].url })
     }
   }
