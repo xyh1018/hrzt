@@ -19,7 +19,7 @@
       :show-text="false"
       :stroke-width="5"
       :percentage="percent"
-      style="width: 148px; margin-top: 5px"
+      style="width: 148px;"
     />
     <el-dialog
       title="图片"
@@ -71,7 +71,7 @@ export default {
     // 文件改变时
     // file是当前的文件，fileList是当前的最新数组
     changeFile(file, fileList) {
-      this.fileList = fileList.map((item) => item)
+      this.fileList = fileList
     },
     // 图片上传之前
     beforeUpload(file) {
@@ -119,7 +119,7 @@ export default {
             setTimeout(() => {
               this.showLoding = false
               this.percent = 0
-            }, 2000)
+            }, 1000)
           }
         )
       }

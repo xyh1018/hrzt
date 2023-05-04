@@ -79,7 +79,7 @@
         type="flex"
         justify="center"
       >
-        <el-col :span="18">
+        <el-col :span="20">
           <el-button
             type="primary"
             @click="saveUser"
@@ -443,7 +443,7 @@
           type="flex"
           justify="center"
         >
-          <el-col :span="18">
+          <el-col :span="20">
             <el-button
               type="primary"
               @click="savePersonal"
@@ -538,13 +538,25 @@ export default {
   },
   methods: {
     async saveUser() {
-      await this.saveUserInfo()
+      const fileList = this.$refs.avatar.fileList
+      // 检查fileList里，upload是否为true
+      if (fileList.some(item => !item.upload)) {
+        this.$message.warning('图片未上传完毕')
+        return
+      }
+      await this.saveUserInfo({ ...this.userInfo, staffPhoto: fileList[0].url })
       this.$message.success('保存基本信息成功！')
     },
     async savePersonal() {
-      await this.saveEmPersonalInfo()
+      const fileList = this.$refs.photo.fileList
+      if (fileList.some(item => !item.upload)) {
+        this.$message.warning('图片未上传完毕')
+        return
+      }
+      await this.saveEmPersonalInfo(this.userId, { ...this.formData, staffPhoto: fileList[0].url })
       this.$message.success('保存个人信息成功！')
     },
+    // api方法
     // 获取员工基本信息
     async getUserDetail() {
       this.userInfo = await getUserDetailById(this.userId)
@@ -553,14 +565,8 @@ export default {
       }
     },
     // 保存用户基本信息
-    async saveUserInfo() {
-      const fileList = this.$refs.avatar.fileList
-      if (fileList.some(item => !item.upload)) {
-        this.$message.warning('图片未上传完毕')
-        return
-      }
-      console.log(fileList)
-      await saveUserInfo({ ...this.userInfo, staffPhoto: fileList[0].url })
+    async saveUserInfo(obj) {
+      await saveUserInfo(obj)
     },
     // 获取员工个人信息
     async getEmPersonalInfo() {
@@ -568,13 +574,8 @@ export default {
       this.$refs.photo.fileList = [{ url: this.formData.staffPhoto }]
     },
     // 保存员工个人信息
-    async saveEmPersonalInfo() {
-      const fileList = this.$refs.photo.fileList
-      if (fileList.some(item => !item.upload)) {
-        this.$message.warning('图片未上传完毕')
-        return
-      }
-      await saveEmPersonalInfo(this.userId, { ...this.formData, staffPhoto: fileList[0].url })
+    async saveEmPersonalInfo(obj) {
+      await saveEmPersonalInfo(obj)
     }
   }
 }
