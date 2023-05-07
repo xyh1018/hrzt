@@ -3,7 +3,7 @@ import request from '@/utils/request'
  * 员工页面数据接口
  */
 
-// 获员工列表
+// 获取员工列表
 export function getEmployee(params) {
   return request({
     url: '/sys/user',
@@ -49,7 +49,7 @@ export function getEmPersonalInfo(id) {
     method: 'GET'
   })
 }
-// 获取员工个人信息
+// 保存员工个人信息
 export function saveEmPersonalInfo(id, data) {
   return request({
     url: `/employees/${id}/personalInfo`,

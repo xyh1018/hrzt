@@ -28,7 +28,7 @@
             size="small"
             icon="el-icon-plus"
             class="right-button-three"
-            @click="isShow=true"
+            @click="isShow = true"
           >
             新增员工
           </el-button>
@@ -36,11 +36,7 @@
       </pageTopTool>
       <el-card>
         <!-- 表格 -->
-        <el-table
-          :data="tableData"
-          border
-          style="width: 100%"
-        >
+        <el-table :data="tableData" border style="width: 100%">
           <el-table-column
             prop="index"
             label="序号"
@@ -56,6 +52,20 @@
             sortable
             align="center"
           />
+          <el-table-column
+            label="头像"
+            width="100"
+            align="center"
+          >
+            <template v-slot="{ row }">
+              <img
+                v-imageError="require('@/assets/common/bigUserHeader.png')"
+                :src="row.staffPhoto"
+                alt=""
+                style="border-radius: 50%; width: 50px; height: 50px;"
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             prop="mobile"
             label="手机号"
@@ -118,22 +128,10 @@
                 type="text"
                 @click="$router.push(`/employees/detail/${row.id}`)"
               >查看</el-button>
-              <el-button
-                size="small"
-                type="text"
-              >转正</el-button>
-              <el-button
-                size="small"
-                type="text"
-              >调岗</el-button>
-              <el-button
-                size="small"
-                type="text"
-              >离职</el-button>
-              <el-button
-                size="small"
-                type="text"
-              >角色</el-button>
+              <el-button size="small" type="text">转正</el-button>
+              <el-button size="small" type="text">调岗</el-button>
+              <el-button size="small" type="text">离职</el-button>
+              <el-button size="small" type="text">角色</el-button>
               <el-button
                 size="small"
                 type="text"
@@ -143,11 +141,7 @@
           </el-table-column>
         </el-table>
         <!-- 分页器 -->
-        <el-row
-          type="flex"
-          justify="center"
-          align="center"
-        >
+        <el-row type="flex" justify="center" align="center">
           <el-pagination
             layout="prev, pager, next"
             :total="total"
@@ -158,7 +152,7 @@
           />
         </el-row>
       </el-card>
-      <addEmp :is-show="isShow" @cancel="isShow=false" @submit="submit" />
+      <addEmp :is-show="isShow" @cancel="isShow = false" @submit="submit" />
     </div>
   </div>
 </template>
@@ -237,13 +231,13 @@ export default {
     // 导出员工数据
     async exportData() {
       const headers = {
-        '姓名': 'username',
-        '手机号': 'mobile',
-        '工号': 'workNumber',
-        '聘用形式': 'formOfEmployment',
-        '部门': 'departmentName',
-        '入职日期': 'timeOfEntry',
-        '转正日期': 'correctionTime'
+        姓名: 'username',
+        手机号: 'mobile',
+        工号: 'workNumber',
+        聘用形式: 'formOfEmployment',
+        部门: 'departmentName',
+        入职日期: 'timeOfEntry',
+        转正日期: 'correctionTime'
       }
       const { rows } = await getEmployee({
         page: 1,
@@ -265,7 +259,10 @@ export default {
     formatJson(headers, rows) {
       return rows.map((item) => {
         return Object.keys(headers).map((key) => {
-          if (headers[key] === 'timeOfEntry' || headers[key] === 'correctionTime') {
+          if (
+            headers[key] === 'timeOfEntry' ||
+            headers[key] === 'correctionTime'
+          ) {
             // 格式化日期
             return formatDate(item[headers[key]])
           } else if (headers[key] === 'formOfEmployment') {

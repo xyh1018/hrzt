@@ -41,12 +41,26 @@
             label="个人详情"
             name="detail"
           >
+            <el-row type="flex" justify="end">
+              <el-tooltip content="打印个人基本信息">
+                <router-link :to="`/employees/print/${userId}?type=personal`">
+                  <i class="el-icon-printer" />
+                </router-link>
+              </el-tooltip>
+            </el-row>
             <userDetail />
           </el-tab-pane>
           <el-tab-pane
             label="岗位信息"
             name="info"
           >
+            <el-row type="flex" justify="end">
+              <el-tooltip content="打印岗位信息">
+                <router-link :to="`/employees/print/${userId}?type=job`">
+                  <i class="el-icon-printer" />
+                </router-link>
+              </el-tooltip>
+            </el-row>
             <jonInfo />
           </el-tab-pane>
         </el-tabs>

@@ -12,6 +12,7 @@ import 'nprogress/nprogress.css' // nprogress的css样式
 import App from './App'
 import store from './store'
 import router from './router'
+import Print from 'vue-print-nb'
 
 import '@/icons' // 图标
 import '@/permission' // 路由权限控制
@@ -25,6 +26,7 @@ Object.keys(filters).forEach((key) => {
 Vue.use(Components)
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
+Vue.use(Print)
 
 Vue.config.productionTip = false
 

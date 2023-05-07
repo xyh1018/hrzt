@@ -106,9 +106,6 @@
             />
           </el-select>
         </el-form-item>
-        <!-- 个人头像 -->
-        <!-- 员工照片 -->
-
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
           <image-upload ref="photo" />
@@ -167,11 +164,13 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="生日">
-          <el-input
-            v-model="formData.birthday"
-            placeholder="示例 0323"
+        <el-form-item label="出生日期">
+          <el-date-picker
+            v-model="formData.dateOfBirth"
+            type="date"
+            placeholder="选择日期"
             class="inputW"
+            value-format="yyyy-MM-dd"
           />
         </el-form-item>
         <el-form-item label="年龄">
@@ -381,7 +380,7 @@
         <el-form-item label="入学时间">
           <el-date-picker
             v-model="formData.enrolmentTime"
-            type="data"
+            type="date"
             placeholder="请输入时间"
             class="inputW"
             value-format="yyyy-MM-dd"
@@ -390,7 +389,7 @@
         <el-form-item label="毕业时间">
           <el-date-picker
             v-model="formData.graduationTime"
-            type="data"
+            type="date"
             placeholder="请输入时间"
             class="inputW"
             value-format="yyyy-MM-dd"
@@ -544,7 +543,7 @@ export default {
         this.$message.warning('图片未上传完毕')
         return
       }
-      await this.saveUserInfo({ ...this.userInfo, staffPhoto: fileList[0].url })
+      await this.saveUserInfo({ ...this.userInfo, staffPhoto: fileList && fileList.length ? fileList[0].url : '' })
       this.$message.success('保存基本信息成功！')
     },
     async savePersonal() {
@@ -553,7 +552,7 @@ export default {
         this.$message.warning('图片未上传完毕')
         return
       }
-      await this.saveEmPersonalInfo(this.userId, { ...this.formData, staffPhoto: fileList[0].url })
+      await this.saveEmPersonalInfo(this.userId, { ...this.formData, staffPhoto: fileList && fileList.length ? fileList[0].url : '' })
       this.$message.success('保存个人信息成功！')
     },
     // api方法
@@ -561,7 +560,7 @@ export default {
     async getUserDetail() {
       this.userInfo = await getUserDetailById(this.userId)
       if (this.userInfo.staffPhoto) {
-        this.$refs.avatar.fileList = [{ url: this.userInfo.staffPhoto }]
+        this.$refs.avatar.fileList = [{ url: this.userInfo.staffPhoto, upload: true }]
       }
     },
     // 保存用户基本信息
@@ -571,11 +570,13 @@ export default {
     // 获取员工个人信息
     async getEmPersonalInfo() {
       this.formData = await getEmPersonalInfo(this.userId)
-      this.$refs.photo.fileList = [{ url: this.formData.staffPhoto }]
+      if (this.formData.staffPhoto) {
+        this.$refs.photo.fileList = [{ url: this.formData.staffPhoto, upload: true }]
+      }
     },
     // 保存员工个人信息
-    async saveEmPersonalInfo(obj) {
-      await saveEmPersonalInfo(obj)
+    async saveEmPersonalInfo(id, obj) {
+      await saveEmPersonalInfo(id, obj)
     }
   }
 }

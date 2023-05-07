@@ -1,5 +1,5 @@
 <template>
-  <div id="myPrint" class="dashboard-container">
+  <div class="dashboard-container">
     <div class="app-container">
       <el-card>
         <el-breadcrumb separator="/" class="titInfo ">
@@ -9,7 +9,10 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item>打印</el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-if="type === 'personal'">
+        <el-row type="flex" justify="start">
+          <el-button v-print="printObj" type="primary" size="small" style="margin-top: 10px;">打印</el-button>
+        </el-row>
+        <div v-if="type === 'personal'" id="myPrint">
           <h2 class="centInfo">员工信息表</h2>
           <table cellspacing="0" width="100%" class="tableList">
             <tr class="title">
@@ -210,7 +213,7 @@
           </table>
           <div class="foot">签字：___________日期:___________</div>
         </div>
-        <div v-else>
+        <div v-else id="myPrint">
           <h2 class="centInfo">岗位信息表</h2>
           <table cellspacing="0" width="100%" class="tableList">
             <tr class="title">
@@ -328,14 +331,17 @@
 </template>
 
 <script>
-import { getPersonalDetail, getJobDetail } from '@/api/employees'
 import { getUserDetailById } from '@/api/user'
+import { getEmPersonalInfo, getJobInfo } from '@/api/employees'
 export default {
   data() {
     return {
       formData: {},
       userId: this.$route.params.id,
-      type: this.$route.query.type // 打印类型
+      type: this.$route.query.type, // 打印类型
+      printObj: {
+        id: 'myPrint'
+      }
     }
   },
   // 创建完毕状态
@@ -345,11 +351,11 @@ export default {
   // 组件更新
   methods: {
     async getPersonalDetail() {
-      this.formData = await getPersonalDetail(this.userId) // 获取个人基本信息
+      this.formData = await getEmPersonalInfo(this.userId)
     },
     async getJobDetail() {
       const userInfo = await getUserDetailById(this.userId)
-      const jobInfo = await getJobDetail(this.userId) // 获取个人基本信息
+      const jobInfo = await getJobInfo(this.userId)
       this.formData = { ...userInfo, ...jobInfo }
     }
   }
