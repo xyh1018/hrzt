@@ -91,8 +91,8 @@ export default {
     }
     return {
       loginForm: {
-        mobile: '18211716621',
-        password: '123456'
+        mobile: '12000000002',
+        password: 'hm#qd@23!'
       },
       loginRules: {
         mobile: [
@@ -103,9 +103,9 @@ export default {
           {
             required: true,
             trigger: 'blur',
-            message: '密码的长度为6-12位，请重试！',
+            message: '密码的长度为6-32位，请重试！',
             min: 6,
-            max: 12
+            max: 32
           }
         ]
       },

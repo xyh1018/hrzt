@@ -5,6 +5,7 @@ import Layout from '@/layout'
 export default {
   path: '/employees', // 路径
   component: Layout, // 组件
+  name: 'employees',
   // 配置二级路由的路由表
   children: [
     {

@@ -28,6 +28,8 @@ module.exports = {
       // 跨域代理配置
       // 这里的api 表示如果我们的请求地址有/api的时候,就出触发代理机制
       // 比如，请求路径为 /api/sys/login 跨域代理后变为 http://ihrm.itheima.net/api/sys/login
+      // http://ihrm-java.itheima.net
+      // http://ihrm.itheima.net
       '/api': {
         target: 'http://ihrm.itheima.net',
         changeOrigin: true

@@ -4,7 +4,7 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
+import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
 import '@/styles/index.scss' // 全局样式
 import 'nprogress/nprogress.css' // nprogress的css样式
@@ -19,20 +19,22 @@ import '@/permission' // 路由权限控制
 import { imageError } from '@/directives' // 自定义指令
 import Components from '@/components'
 import * as filters from '@/filters' // 导入自定义过滤器
+import checkPermission from '@/mixin' // 导入mixin
+
 // 注册自定义过滤器
 Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key])
 })
 Vue.use(Components)
 // set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
+Vue.use(ElementUI, { zhLocale })
 Vue.use(Print)
 
 Vue.config.productionTip = false
 
 // 注册自定义指令
 Vue.directive('imageError', imageError)
-
+Vue.mixin(checkPermission)
 new Vue({
   el: '#app',
   router,

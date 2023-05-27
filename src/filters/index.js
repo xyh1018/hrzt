@@ -355,7 +355,7 @@ export function importFile(file, obj, callback, func) {
 export function minHeight(resfile) {
   return document.body.clientHeight - 180 + 'px'
 }
-
+// 格式化日期
 export function formatDate(date, fmt = 'yyyy-MM-dd') {
   if (!(date instanceof Array)) {
     date = new Date(date)

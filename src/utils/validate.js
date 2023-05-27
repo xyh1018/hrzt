@@ -23,5 +23,5 @@ export function validUsername(str) {
  * 校验mobile
  */
 export function vaildMoile(str) {
-  return /^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(str)
+  return /^(?:(?:\+|00)86)?1[2-9]\d{9}$/.test(str)
 }

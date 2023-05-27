@@ -48,6 +48,7 @@
                       <el-button
                         size="small"
                         type="text"
+                        @click="isShowAssign(row.id)"
                       >分配权限</el-button>
                       <el-button
                         size="small"
@@ -140,6 +141,12 @@
         @cancel="cancel"
         @closeShow="closeShow"
       />
+      <assignPermission
+        :id="id"
+        ref="assign"
+        :is-show="showAssign"
+        @cancelAssign="cancelAssign"
+      />
     </div>
   </div>
 </template>
@@ -149,9 +156,11 @@ import { getAllRole, getCompany, deleteRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
 import { MessageBox } from 'element-ui'
 import addRole from './components/add-role.vue'
+import assignPermission from './components/assign-permission.vue'
 export default {
   components: {
-    addRole
+    addRole,
+    assignPermission
   },
   data() {
     return {
@@ -170,7 +179,9 @@ export default {
         pagesize: 10,
         total: 0
       },
-      isShow: false
+      isShow: false,
+      showAssign: false,
+      id: ''
     }
   },
   computed: {
@@ -225,6 +236,16 @@ export default {
     closeShow() {
       this.isShow = false
       this.getRole()
+    },
+    // 取消展示分配权财
+    cancelAssign() {
+      this.showAssign = false
+    },
+    async isShowAssign(id) {
+      this.id = id
+      await this.$refs.assign.getPermission()
+      await this.$refs.assign.getRoleDetail(id)
+      this.showAssign = true
     }
   }
 }

@@ -23,9 +23,18 @@ router.beforeEach(async(to, from, next) => {
       next('/') // 如果是登陆页，定向到主页
     } else {
       if (!store.getters.userId) {
-        await store.dispatch('user/getUserInfo')
+        const { roles } = await store.dispatch('user/getUserInfo')
+        const routes = await store.dispatch('permission/filterRoutes', roles.menus)
+        // 添加动态路由到路由表
+        console.log(routes, router)
+        router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }])
+        // for (const route of routes) {
+        //   router.addRoute(route)
+        // }
+        next(to.path)
+      } else {
+        next() // 不是登陆页，直接放行
       }
-      next() // 不是登陆页，直接放行
     }
   } else {
     // 没有token

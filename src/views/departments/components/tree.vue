@@ -19,7 +19,9 @@
           <span class="manager">{{ treeNode.manager }}</span>
         </el-col>
         <el-col>
-          <el-dropdown size="small">
+          <el-dropdown
+            size="small"
+          >
             <span class="el-dropdown-link">
               操作<i class="el-icon-arrow-down el-icon--right" />
             </span>
@@ -27,6 +29,7 @@
               <el-dropdown-item
                 v-for="item in dropdownList"
                 :key="item.id"
+                :disabled="!checkPermission('add-dept')"
                 @click.native="handleItemClick(item)"
               >{{ item.name }}</el-dropdown-item>
             </el-dropdown-menu>

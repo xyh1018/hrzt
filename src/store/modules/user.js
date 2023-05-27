@@ -1,6 +1,6 @@
 import { login, getInfo, getUserDetailById } from '@/api/user'
 import { getTokenU, setTokenU, removeTokenU, setTimeStampU } from '@/utils/auth'
-// import { resetRouter } from '@/router'
+import { resetRouter } from '@/router'
 
 const state = {
   token: getTokenU(), // 初始化从cookie读取token
@@ -38,18 +38,22 @@ const actions = {
   },
   // 获取用户资料
   async getUserInfo(context) {
-    // 用户j基本资料
+    // 用户基本资料
     const baseInfo = await getInfo()
     // 用户详细资料
     const detailInfo = await getUserDetailById(baseInfo.userId)
     // 合并用户资料
     const result = { ...baseInfo, ...detailInfo }
     context.commit('setUserInfo', result)
+    return result
   },
   // 登出
   logout(context) {
     context.commit('removeToken')
     context.commit('removeUserInfo')
+    // 重置路由
+    resetRouter()
+    context.commit('permission/setRoutes', [], { root: true })
   }
 }
 

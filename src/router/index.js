@@ -11,6 +11,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
+// 静态路由
 export const constantRoutes = [
   {
     path: '/login',
@@ -43,9 +44,9 @@ export const constantRoutes = [
         component: () => import('@/views/import')
       }
     ]
-  },
+  }
   // 404页必须放在末尾 !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 // 动态路由
 export const asyncRoutes = [
@@ -61,7 +62,7 @@ export const asyncRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes]
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()

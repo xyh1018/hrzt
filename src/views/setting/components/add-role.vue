@@ -107,6 +107,10 @@ export default {
     cancel() {
       this.$emit('cancel')
       this.$refs.form.resetFields()
+      this.form = {
+        name: '',
+        description: ''
+      }
     },
     // 添加角色
     async addRole() {

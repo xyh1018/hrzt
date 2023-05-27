@@ -28,6 +28,7 @@
             size="small"
             icon="el-icon-plus"
             class="right-button-three"
+            :disabled="!checkPermission('POINT-USER-ADD')"
             @click="isShow = true"
           >
             新增员工
@@ -52,17 +53,13 @@
             sortable
             align="center"
           />
-          <el-table-column
-            label="头像"
-            width="100"
-            align="center"
-          >
+          <el-table-column label="头像" width="100" align="center">
             <template v-slot="{ row }">
               <img
                 v-imageError="require('@/assets/common/bigUserHeader.png')"
                 :src="row.staffPhoto"
                 alt=""
-                style="border-radius: 50%; width: 50px; height: 50px;"
+                style="border-radius: 50%; width: 50px; height: 50px"
               >
             </template>
           </el-table-column>
@@ -131,10 +128,15 @@
               <el-button size="small" type="text">转正</el-button>
               <el-button size="small" type="text">调岗</el-button>
               <el-button size="small" type="text">离职</el-button>
-              <el-button size="small" type="text">角色</el-button>
               <el-button
                 size="small"
                 type="text"
+                @click="editRole(row.id)"
+              >角色</el-button>
+              <el-button
+                size="small"
+                type="text"
+                :disabled="!checkPermission('point-user-delete')"
                 @click="deleteEmp(row.id)"
               >删除</el-button>
             </template>
@@ -153,6 +155,12 @@
         </el-row>
       </el-card>
       <addEmp :is-show="isShow" @cancel="isShow = false" @submit="submit" />
+      <assignRoles
+        ref="assignRoles"
+        :is-show="showAssignRoles"
+        :user-id="userId"
+        @cancel="showAssignRoles = false"
+      />
     </div>
   </div>
 </template>
@@ -162,9 +170,12 @@ import { getEmployee, deleteEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import addEmp from './components/add-emp.vue'
 import { formatDate } from '@/filters/index'
+import assignRoles from './components/assign-roles.vue'
+
 export default {
   components: {
-    addEmp
+    addEmp,
+    assignRoles
   },
   data() {
     return {
@@ -174,7 +185,9 @@ export default {
         size: 10
       },
       total: 0,
-      isShow: false
+      isShow: false,
+      showAssignRoles: false,
+      userId: null
     }
   },
   created() {
@@ -276,6 +289,11 @@ export default {
           }
         })
       })
+    },
+    async editRole(id) {
+      this.userId = id
+      await this.$refs.assignRoles.getEmBaseInfo(id)
+      this.showAssignRoles = true
     }
   }
 }
