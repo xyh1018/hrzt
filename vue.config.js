@@ -10,6 +10,29 @@ const name = defaultSettings.title || 'vue Admin Template' // 网页标题
 
 const port = process.env.port || process.env.npm_config_port || 8888 // 访问端口设置
 
+let cdn = { css: [], js: [] }
+let externals = {}
+const isProd = process.env.NODE_ENV === 'production' // 表示当前环境是生产环境
+if (isProd) {
+  cdn = {
+    css: [
+      'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+    ],
+    js: [
+      'https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js',
+      'https://unpkg.com/element-ui/lib/index.js',
+      'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/jszip.min.js',
+      'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/xlsx.full.min.js',
+      'https://xyh-1314748094.cos.ap-nanjing.myqcloud.com/echarts.min.js'
+    ]
+  }
+  externals = {
+    'echarts': 'echarts',
+    'xlsx': 'XLSX',
+    'element-ui': 'ELEMENT',
+    'vue': 'Vue'
+  }
+}
 // 所有配置项说明均可在中找到https://cli.vuejs.org/config/
 module.exports = {
   publicPath: '/', // 部署应用包时的基本 URL
@@ -47,9 +70,17 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
-    }
+    },
+    // 要排除的包名,打包时不打包
+    externals: externals
   },
   chainWebpack(config) {
+    config.plugin('html').tap(args => {
+      // 注入点变量
+      // args[0] 相当于 html模板中 htmlWebpackplugin.options
+      args[0].cdn = cdn // 将cdn变量注入到html模板中
+      return args
+    })
     // 它可以提高首屏加载速度，建议打开预加载
     config.plugin('preload').tap(() => [
       {

@@ -164,7 +164,7 @@ export default {
         // you can adjust it according to your needs.
         if (view.name === 'Dashboard') {
           // to reload home page
-          this.$router.replace({ path: '/redirect' + view.fullPath })
+          this.$router.replace('/')
         } else {
           this.$router.push('/')
         }
@@ -283,8 +283,8 @@ export default {
         vertical-align: -3px;
       }
       &:hover {
-        background-color: #b4bccc;
-        color: #fff;
+        background-color: #f3eded;
+        color: #767676;
       }
     }
   }

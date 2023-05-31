@@ -7,6 +7,9 @@
     <meta name="theme-color" content="#658bf7">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= webpackConfig.name %></title>
+    <% for(var css of htmlWebpackPlugin.options.cdn.css) { %>
+      <link rel="stylesheet" href="<%=css%>">
+    <% } %>
   </head>
   <body>
     <noscript>
@@ -14,5 +17,8 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <% for(var js of htmlWebpackPlugin.options.cdn.js) { %>
+      <script src="<%=js%>"></script>
+    <% } %>
   </body>
 </html>
