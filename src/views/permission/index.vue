@@ -49,6 +49,7 @@ import addMenu from './components/add-menu.vue'
 import { getPermission, deletePermission } from '@/api/permission'
 import { arrayToTree } from '@/utils/index'
 export default {
+  name: 'Permissions',
   components: {
     addMenu
   },

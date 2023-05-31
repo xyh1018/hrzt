@@ -129,6 +129,7 @@ import { getDepartmentList } from '@/api/departments'
 import changeSalary from './components/change-salary.vue'
 
 export default {
+  name: 'Salarys',
   components: {
     changeSalary
   },

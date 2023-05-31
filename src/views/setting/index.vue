@@ -158,6 +158,7 @@ import { MessageBox } from 'element-ui'
 import addRole from './components/add-role.vue'
 import assignPermission from './components/assign-permission.vue'
 export default {
+  name: 'Settings',
   components: {
     addRole,
     assignPermission

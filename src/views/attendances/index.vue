@@ -95,6 +95,7 @@
 import { getDepartmentList } from '@/api/departments'
 import { getAttendList } from '@/api/attendances'
 export default {
+  name: 'Attendances',
   data() {
     return {
       checkList: {

@@ -10,6 +10,7 @@
     <div class="app-breadcrumb">人力资源管理平台</div>
 
     <div class="right-menu">
+      <screenFull class="right-menu-item" />
       <el-dropdown
         class="avatar-container"
         trigger="click"
@@ -52,10 +53,12 @@
 import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import screenFull from './screen-full.vue'
 
 export default {
   components: {
-    Hamburger
+    Hamburger,
+    screenFull
   },
   data() {
     return {
@@ -114,7 +117,7 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
-
+    display: flex;
     &:focus {
       outline: none;
     }
@@ -169,6 +172,14 @@ export default {
         color: #fff;
       }
     }
+  }
+  .right-menu-item {
+    display: inline-block;
+    padding: 0 8px;
+    height: 100%;
+    font-size: 18px;
+    color: #ffffff;
+    vertical-align: middle;
   }
 }
 </style>

@@ -51,6 +51,7 @@ import { Message } from 'element-ui'
 import { arrayToTree } from '@/utils/index'
 
 export default {
+  name: 'Departments',
   components: {
     tree,
     addDept

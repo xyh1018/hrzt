@@ -81,6 +81,7 @@
 import { getApprovalList } from '@/api/approvals'
 
 export default {
+  name: 'Approvals',
   data() {
     return {
       checkList: {

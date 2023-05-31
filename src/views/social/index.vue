@@ -139,6 +139,7 @@
 import { getDepartmentList } from '@/api/departments'
 import { getSocialList } from '@/api/social'
 export default {
+  name: 'SocialSecuritys',
   data() {
     return {
       checkList: {
