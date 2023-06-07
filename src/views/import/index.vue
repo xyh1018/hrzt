@@ -16,7 +16,7 @@
         <span style="color: #409EFF;">示例</span>
       </el-row>
       <el-row style="margin-top: 10px; margin-bottom: 30px">
-        <img src="@/assets/common/el.jpg" class="img">
+        <img src="https://xyh-1314748094.cos.ap-nanjing.myqcloud.com/%E4%BA%BA%E5%8A%9B%E8%B5%84%E6%BA%90/el.jpg" class="img">
       </el-row>
     </el-card>
   </div>

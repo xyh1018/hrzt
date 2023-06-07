@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       // 默认用户头像
-      defaultImgSrc: require('@/assets/common/head.jpg')
+      defaultImgSrc: 'https://xyh-1314748094.cos.ap-nanjing.myqcloud.com/%E4%BA%BA%E5%8A%9B%E8%B5%84%E6%BA%90/head.jpg'
     }
   },
   computed: {

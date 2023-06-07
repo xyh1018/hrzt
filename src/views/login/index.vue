@@ -12,7 +12,7 @@
       <div class="title-container">
         <h3 class="title">
           <img
-            src="@/assets/common/login-logo.png"
+            src="https://xyh-1314748094.cos.ap-nanjing.myqcloud.com/%E4%BA%BA%E5%8A%9B%E8%B5%84%E6%BA%90/login-logo.png"
             alt="标题图片"
           >
         </h3>
@@ -91,7 +91,7 @@ export default {
     }
     return {
       loginForm: {
-        mobile: '12000000002',
+        mobile: '13800000002',
         password: 'hm#qd@23!'
       },
       loginRules: {
@@ -224,7 +224,7 @@ $light_gray: #eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-  background-image: url('~@/assets/common/login.jpg');
+  background-image: url('https://xyh-1314748094.cos.ap-nanjing.myqcloud.com/%E4%BA%BA%E5%8A%9B%E8%B5%84%E6%BA%90/login.jpg');
   background-position: center;
   background-size: cover;
   display: flex;
